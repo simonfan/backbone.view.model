@@ -36,6 +36,7 @@ define(['backbone','jquery','jquery.fill','underscore'], function(Backbone, $, u
 			 * Listen to change events on the model.
 			 * Whenever the model changes, the view should update itself.
 			 */
+			var _this = this;
 			this.listenTo(this.model, 'change', function(model) {
 				var data = _this._data();
 				_this.fill(data);
