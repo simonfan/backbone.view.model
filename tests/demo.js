@@ -1,4 +1,4 @@
-define(['backbone.modelview','backbone'], function(ModelView, Backbone) {
+define(['backbone.view.model','backbone'], function(ModelView, Backbone) {
 
 
 	window.model = new Backbone.Model({

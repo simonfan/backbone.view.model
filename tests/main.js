@@ -10,7 +10,7 @@ require.config({
 		'jquery.fill': 'components/jquery.fill/jquery.fill',
 
 		// the module files go here
-		'backbone.modelview': '../backbone.modelview',
+		'backbone.view.model': '../backbone.view.model',
 
 		// DEMO
 		'demo-main': 'demo',	// the main file for the demo
