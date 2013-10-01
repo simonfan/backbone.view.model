@@ -19,13 +19,12 @@ define(['backbone','jquery','jquery.fill','underscore'], function(Backbone, $, u
 				throw new Error('NO EL in ModelView!');
 			}
 
-			var _this = this,
-				// maps the data from the model to the elements.
-				map = options.map || this.map;
+
+			this.map = options.map || this.map;
 
 			// the real map
 			this._map = {};
-			this.mapAttribute(map);
+			this.mapAttribute(this.map);
 
 			/** 
 			 * If there is a data parameter in the options, 
