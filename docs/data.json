@@ -4,30 +4,256 @@
         "version": "0.0.0"
     },
     "files": {
+        "src/__backbone.view.model/html-to-model.js": {
+            "name": "src/__backbone.view.model/html-to-model.js",
+            "modules": {
+                "html-to-model": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/__backbone.view.model/model-to-html.js": {
+            "name": "src/__backbone.view.model/model-to-html.js",
+            "modules": {
+                "Backbone.View.Model": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src/index.js": {
             "name": "src/index.js",
-            "modules": {
-                "BackboneViewModel": 1
-            },
+            "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
         }
     },
     "modules": {
-        "BackboneViewModel": {
-            "name": "BackboneViewModel",
+        "backbone.view.model": {
+            "name": "backbone.view.model",
+            "submodules": {
+                "html-to-model": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "html-to-model": {
+            "name": "html-to-model",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "backbone.view.model",
+            "namespace": "",
+            "file": "src/__backbone.view.model/html-to-model.js",
+            "line": 1
+        },
+        "Backbone.View.Model": {
+            "name": "Backbone.View.Model",
             "submodules": {},
             "classes": {},
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "src/index.js",
-            "line": 5,
-            "description": "AMD module."
+            "file": "src/__backbone.view.model/model-to-html.js",
+            "line": 1
         }
     },
     "classes": {},
-    "classitems": [],
+    "classitems": [
+        {
+            "file": "src/__backbone.view.model/html-to-model.js",
+            "line": 11,
+            "description": "Initialization logic for binding html input tags values\nto the models attributes.",
+            "itemtype": "method",
+            "name": "_initHtmlToModel",
+            "class": "",
+            "module": "backbone.view.model",
+            "submodule": "html-to-model"
+        },
+        {
+            "file": "src/__backbone.view.model/html-to-model.js",
+            "line": 19,
+            "description": "Hash where elements are referenced\nby their selector strings.",
+            "itemtype": "property",
+            "name": "$map",
+            "type": "Object",
+            "class": "",
+            "module": "backbone.view.model",
+            "submodule": "html-to-model"
+        },
+        {
+            "file": "src/__backbone.view.model/html-to-model.js",
+            "line": 44,
+            "description": "String of tagnames that identify input.",
+            "itemtype": "property",
+            "name": "inputSelector",
+            "type": "String",
+            "class": "",
+            "module": "backbone.view.model",
+            "submodule": "html-to-model"
+        },
+        {
+            "file": "src/__backbone.view.model/html-to-model.js",
+            "line": 53,
+            "description": "Binds the value of the element selected to the attribute.",
+            "itemtype": "method",
+            "name": "bindInput",
+            "params": [
+                {
+                    "name": "selector",
+                    "description": "",
+                    "type": "String|Array"
+                },
+                {
+                    "name": "attribute",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "",
+            "module": "backbone.view.model",
+            "submodule": "html-to-model"
+        },
+        {
+            "file": "src/__backbone.view.model/html-to-model.js",
+            "line": 81,
+            "description": "Hash of functions that will return a value\ngiven an jquery $el.\nKeyed by tagName",
+            "itemtype": "property",
+            "name": "$readers",
+            "type": "Object",
+            "class": "",
+            "module": "backbone.view.model",
+            "submodule": "html-to-model"
+        },
+        {
+            "file": "src/__backbone.view.model/html-to-model.js",
+            "line": 110,
+            "description": "Takes a selector string and returns the value of it.",
+            "itemtype": "method",
+            "name": "valueOf",
+            "params": [
+                {
+                    "name": "selector",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "",
+            "module": "backbone.view.model",
+            "submodule": "html-to-model"
+        },
+        {
+            "file": "src/__backbone.view.model/html-to-model.js",
+            "line": 135,
+            "description": "Method used to hanlde changes on input elements within\nthe view.\n\nVery close-bound to the way bindInput works.",
+            "itemtype": "method",
+            "name": "_updateModel",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "e",
+                    "description": "",
+                    "type": "Event"
+                }
+            ],
+            "class": "",
+            "module": "backbone.view.model",
+            "submodule": "html-to-model"
+        },
+        {
+            "file": "src/__backbone.view.model/model-to-html.js",
+            "line": 10,
+            "description": "Initialization logic for binding model\nattributes to html elements.",
+            "itemtype": "method",
+            "name": "_initModelToHtml",
+            "class": "",
+            "module": "Backbone.View.Model"
+        },
+        {
+            "file": "src/__backbone.view.model/model-to-html.js",
+            "line": 18,
+            "description": "The function that will fill in html for us.\nUses jquery.filler to build a cache of the\njquery DOM selections.",
+            "itemtype": "method",
+            "name": "fill",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "",
+            "module": "Backbone.View.Model"
+        },
+        {
+            "file": "src/__backbone.view.model/model-to-html.js",
+            "line": 42,
+            "description": "Immediately before updating the view,\nthis method is called, so that we may return a\ndata object.\n\nIf the function names the second argument,\nthe function is then ran asynchronously.",
+            "itemtype": "method",
+            "name": "data",
+            "params": [
+                {
+                    "name": "model",
+                    "description": "",
+                    "type": "Backbone.Model"
+                },
+                {
+                    "name": "done",
+                    "description": "",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "",
+            "module": "Backbone.View.Model"
+        },
+        {
+            "file": "src/__backbone.view.model/model-to-html.js",
+            "line": 65,
+            "description": "Method used internally to update the html.",
+            "itemtype": "method",
+            "name": "_updateView",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "model",
+                    "description": ""
+                }
+            ],
+            "class": "",
+            "module": "Backbone.View.Model"
+        },
+        {
+            "file": "src/index.js",
+            "line": 17,
+            "description": "Parses out options, checks for requirements and\nsummons the initializers.",
+            "itemtype": "method",
+            "name": "initialize",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "el*,",
+                    "description": ""
+                },
+                {
+                    "name": "model",
+                    "description": ""
+                }
+            ],
+            "class": "",
+            "module": "Backbone.View.Model"
+        }
+    ],
     "warnings": []
 }

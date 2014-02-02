@@ -11,7 +11,9 @@ require.config({
 		qunit: '../bower_components/qunit/qunit/qunit',
 		'requirejs-text': '../bower_components/requirejs-text/text',
 		underscore: '../bower_components/underscore/underscore',
-		backbone: '../bower_components/backbone/backbone'
+		backbone: '../bower_components/backbone/backbone',
+		lodash: '../bower_components/lodash/dist/lodash.compat',
+		'jquery.filler': '../bower_components/jquery.filler/built/jquery.filler'
 	},
 	shim: {
 		backbone: {
@@ -30,5 +32,6 @@ require.config({
 		should: {
 			exports: 'should'
 		}
-	}
+	},
+	waitSeconds: 1000
 });

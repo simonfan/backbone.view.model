@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/index.js - backbone.view.model</title>
+    <title>src/__backbone.view.model/model-to-html.js - backbone.view.model</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -86,52 +86,94 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/index.js</h1>
+                        <h1 class="file-heading">File: src/__backbone.view.model/model-to-html.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-//     Backbone.View.Model
-//     (c) simonfan
-//     Backbone.View.Model is licensed under the MIT terms.
-
 /**
  * @module Backbone.View.Model
  */
-
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
-	var Backbone = require(&#x27;backbone&#x27;),
-		_ = require(&#x27;lodash&#x27;);
+	var _ = require(&#x27;lodash&#x27;),
+		filler = require(&#x27;jquery.filler&#x27;);
 
-	var ModelView = module.exports = Backbone.View.extend({
+	/**
+	 * Initialization logic for binding model
+	 * attributes to html elements.
+	 *
+	 * @method _initModelToHtml
+	 */
+	exports._initModelToHtml = function _initModelToHtml() {
 
 		/**
-		 * Parses out options, checks for requirements and
-		 * summons the initializers.
+		 * The function that will fill in html for us.
+		 * Uses jquery.filler to build a cache of the
+		 * jquery DOM selections.
 		 *
-		 * @method initialize
-		 * @param options {Object}
-		 *     @param el*,
-		 *     @param model
+		 * @method fill
+		 * @param data {Object}
 		 */
-		initialize: function (options) {
+		this.fill = filler(this.$el, this.map);
 
-			// el is a requirement
-			if (!this.$el) { throw new Error(&#x27;No given $el on ModelView initialization.&#x27;); }
 
-			// make sure there is a model
-			this.model = _.isFunction(this.model) ? new this.model() : this.model;
+		// bind the update view method
+		this._updateView = _.bind(this._updateView, this);
 
-			// MODEL -&gt; HTML
-			this._initModelToHtml();
+		// Listen to changes on attributes
+		// defined at the map.
+		// Any changes there should reflect
+		// changes on the view.
+		this.listenTo(this.model, &#x27;change&#x27;, this._updateView);
 
-			// HTML INPUT -&gt; MODEL
-			this._initHtmlToModel();
+		// Set initial values
+		this._updateView(this.model);
+	};
+
+	/**
+	 * Immediately before updating the view,
+	 * this method is called, so that we may return a
+	 * data object.
+	 *
+	 * If the function names the second argument,
+	 * the function is then ran asynchronously.
+	 *
+	 * @method data
+	 * @param model {Backbone.Model}
+	 * @param [done] {Function}
+	 */
+	exports.data = function data(model /* done */) {
+
+		// we may return the model&#x27;s attributes by default,
+		// because jquery.filler has cached the attributes that
+		// need DOM change and those that do not need.
+		//
+		// otherwise, we would return model.changedAttributes()
+		// for better performance.
+		return model.attributes;
+	};
+
+	/**
+	 * Method used internally to update the html.
+	 *
+	 * @method _updateView
+	 * @private
+	 * @param model
+	 */
+	exports._updateView = function _updateView(model) {
+
+		if (this.data.length === 1) {
+			// sync
+			var data = this.data(model);
+			this.fill(data);
+
+		} else {
+
+			// asynchronous!
+			this.data(model, _.bind(this.fill, this));
 		}
-	})
-	.extend(require(&#x27;./__backbone.view.model/html-to-model&#x27;))
-	.extend(require(&#x27;./__backbone.view.model/model-to-html&#x27;));
+	};
 });
 
     </pre>

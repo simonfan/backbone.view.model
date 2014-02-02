@@ -83,7 +83,7 @@ module.exports = function (grunt) {
 				options: {
 					livereload: true
 				},
-				tasks: ['jshint:gruntfile', 'jshint:src', 'simplemocha']
+				tasks: ['jshint:gruntfile', 'jshint:src']
 			},
 
 			bower: {
@@ -113,7 +113,7 @@ module.exports = function (grunt) {
 
 					// exclude these modules AND their dependencies
 					// (excluding your bower dependencies)
-					exclude: ["underscore"],
+					exclude: ["underscore", "backbone", "lodash", "jquery.filler"],
 
 					// excludeShallow
 					excludeShallow: [],

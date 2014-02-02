@@ -18,11 +18,15 @@
                 // use mocha with bdd
                 mocha.setup('bdd');
 
+                console.log('loading test files')
+
                 // parse test names
                 tests = JSON.parse(tests);
 
                 // load tests via requirejs
                 require(tests, function() {
+                	console.log('run')
+
                     // run mocha
                     mocha.checkLeaks();
                     mocha.run();

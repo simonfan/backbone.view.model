@@ -1,7 +1,7 @@
 {
   "name": "backbone.view.model",
   "main": "built/backbone.view.model.js",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Some module...",
   "dependencies": {
     "underscore": "~1.5.2",

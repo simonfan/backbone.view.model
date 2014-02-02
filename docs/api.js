@@ -2,13 +2,22 @@ YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [],
     "modules": [
-        "BackboneViewModel"
+        "Backbone.View.Model",
+        "backbone.view.model",
+        "html-to-model"
     ],
     "allModules": [
         {
-            "displayName": "BackboneViewModel",
-            "name": "BackboneViewModel",
-            "description": "AMD module."
+            "displayName": "backbone.view.model",
+            "name": "backbone.view.model"
+        },
+        {
+            "displayName": "Backbone.View.Model",
+            "name": "Backbone.View.Model"
+        },
+        {
+            "displayName": "html-to-model",
+            "name": "html-to-model"
         }
     ]
 } };
