@@ -1,3 +1,2 @@
-.bowerrc
-
-tests/components
+node_modules
+bower_components

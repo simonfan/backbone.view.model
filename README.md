@@ -1,1 +1,3 @@
-This is a component boilerplate. Add your description here!
+# backbone.view.model[![Build Status](https://secure.travis-ci.org/simonfan/backbone.view.model.png?branch=master)](http://travis-ci.org/simonfan/backbone.view.model)
+
+Some module...

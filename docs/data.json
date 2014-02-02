@@ -1,0 +1,33 @@
+{
+    "project": {
+        "name": "backbone.view.model",
+        "version": "0.0.0"
+    },
+    "files": {
+        "src/index.js": {
+            "name": "src/index.js",
+            "modules": {
+                "BackboneViewModel": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "BackboneViewModel": {
+            "name": "BackboneViewModel",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src/index.js",
+            "line": 5,
+            "description": "AMD module."
+        }
+    },
+    "classes": {},
+    "classitems": [],
+    "warnings": []
+}
