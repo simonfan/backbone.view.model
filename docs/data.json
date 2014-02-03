@@ -4,8 +4,8 @@
         "version": "0.0.0"
     },
     "files": {
-        "src/__backbone.view.model/html-to-model.js": {
-            "name": "src/__backbone.view.model/html-to-model.js",
+        "src/__backbone.view.model/dom-to-model/index.js": {
+            "name": "src/__backbone.view.model/dom-to-model/index.js",
             "modules": {
                 "html-to-model": 1
             },
@@ -13,8 +13,15 @@
             "fors": {},
             "namespaces": {}
         },
-        "src/__backbone.view.model/model-to-html.js": {
-            "name": "src/__backbone.view.model/model-to-html.js",
+        "src/__backbone.view.model/dom-to-model/read-dom-value.js": {
+            "name": "src/__backbone.view.model/dom-to-model/read-dom-value.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/__backbone.view.model/model-to-dom.js": {
+            "name": "src/__backbone.view.model/model-to-dom.js",
             "modules": {
                 "Backbone.View.Model": 1
             },
@@ -49,7 +56,7 @@
             "namespaces": {},
             "module": "backbone.view.model",
             "namespace": "",
-            "file": "src/__backbone.view.model/html-to-model.js",
+            "file": "src/__backbone.view.model/dom-to-model/index.js",
             "line": 1
         },
         "Backbone.View.Model": {
@@ -59,15 +66,26 @@
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "src/__backbone.view.model/model-to-html.js",
+            "file": "src/__backbone.view.model/model-to-dom.js",
             "line": 1
         }
     },
     "classes": {},
     "classitems": [
         {
-            "file": "src/__backbone.view.model/html-to-model.js",
-            "line": 11,
+            "file": "src/__backbone.view.model/dom-to-model/index.js",
+            "line": 16,
+            "description": "Hash for the parsers. Every parser function is called\nwithin the view's context and takes the value read\nfrom the DOM as arugment.",
+            "itemtype": "property",
+            "name": "parsers",
+            "type": "Object",
+            "class": "",
+            "module": "backbone.view.model",
+            "submodule": "html-to-model"
+        },
+        {
+            "file": "src/__backbone.view.model/dom-to-model/index.js",
+            "line": 26,
             "description": "Initialization logic for binding html input tags values\nto the models attributes.",
             "itemtype": "method",
             "name": "_initHtmlToModel",
@@ -76,19 +94,19 @@
             "submodule": "html-to-model"
         },
         {
-            "file": "src/__backbone.view.model/html-to-model.js",
-            "line": 19,
+            "file": "src/__backbone.view.model/dom-to-model/index.js",
+            "line": 34,
             "description": "Hash where elements are referenced\nby their selector strings.",
             "itemtype": "property",
-            "name": "$map",
+            "name": "$els",
             "type": "Object",
             "class": "",
             "module": "backbone.view.model",
             "submodule": "html-to-model"
         },
         {
-            "file": "src/__backbone.view.model/html-to-model.js",
-            "line": 44,
+            "file": "src/__backbone.view.model/dom-to-model/index.js",
+            "line": 59,
             "description": "String of tagnames that identify input.",
             "itemtype": "property",
             "name": "inputSelector",
@@ -98,8 +116,8 @@
             "submodule": "html-to-model"
         },
         {
-            "file": "src/__backbone.view.model/html-to-model.js",
-            "line": 53,
+            "file": "src/__backbone.view.model/dom-to-model/index.js",
+            "line": 68,
             "description": "Binds the value of the element selected to the attribute.",
             "itemtype": "method",
             "name": "bindInput",
@@ -120,36 +138,8 @@
             "submodule": "html-to-model"
         },
         {
-            "file": "src/__backbone.view.model/html-to-model.js",
-            "line": 81,
-            "description": "Hash of functions that will return a value\ngiven an jquery $el.\nKeyed by tagName",
-            "itemtype": "property",
-            "name": "$readers",
-            "type": "Object",
-            "class": "",
-            "module": "backbone.view.model",
-            "submodule": "html-to-model"
-        },
-        {
-            "file": "src/__backbone.view.model/html-to-model.js",
-            "line": 110,
-            "description": "Takes a selector string and returns the value of it.",
-            "itemtype": "method",
-            "name": "valueOf",
-            "params": [
-                {
-                    "name": "selector",
-                    "description": "",
-                    "type": "String"
-                }
-            ],
-            "class": "",
-            "module": "backbone.view.model",
-            "submodule": "html-to-model"
-        },
-        {
-            "file": "src/__backbone.view.model/html-to-model.js",
-            "line": 135,
+            "file": "src/__backbone.view.model/dom-to-model/index.js",
+            "line": 97,
             "description": "Method used to hanlde changes on input elements within\nthe view.\n\nVery close-bound to the way bindInput works.",
             "itemtype": "method",
             "name": "_updateModel",
@@ -167,8 +157,47 @@
             "submodule": "html-to-model"
         },
         {
-            "file": "src/__backbone.view.model/model-to-html.js",
-            "line": 10,
+            "file": "src/__backbone.view.model/dom-to-model/read-dom-value.js",
+            "line": 11,
+            "description": "Hash of functions that will return a value\ngiven an jquery $el.\nKeyed by tagName",
+            "itemtype": "property",
+            "name": "$readers",
+            "access": "private",
+            "tagname": "",
+            "type": "Object",
+            "class": "",
+            "module": "backbone.view.model",
+            "submodule": "html-to-model"
+        },
+        {
+            "file": "src/__backbone.view.model/dom-to-model/read-dom-value.js",
+            "line": 41,
+            "description": "Takes a selector string and returns the value of it.",
+            "itemtype": "method",
+            "name": "readDomValue",
+            "params": [
+                {
+                    "name": "selector",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "",
+            "module": "backbone.view.model",
+            "submodule": "html-to-model"
+        },
+        {
+            "file": "src/__backbone.view.model/model-to-dom.js",
+            "line": 11,
+            "description": "Holds the attribute stringifiers.\nEvery attribute stringifier is called within the view's\ncontext and receives the model's attribute value.",
+            "itemtype": "property",
+            "name": "stringifiers",
+            "class": "",
+            "module": "Backbone.View.Model"
+        },
+        {
+            "file": "src/__backbone.view.model/model-to-dom.js",
+            "line": 21,
             "description": "Initialization logic for binding model\nattributes to html elements.",
             "itemtype": "method",
             "name": "_initModelToHtml",
@@ -176,8 +205,8 @@
             "module": "Backbone.View.Model"
         },
         {
-            "file": "src/__backbone.view.model/model-to-html.js",
-            "line": 18,
+            "file": "src/__backbone.view.model/model-to-dom.js",
+            "line": 29,
             "description": "The function that will fill in html for us.\nUses jquery.filler to build a cache of the\njquery DOM selections.",
             "itemtype": "method",
             "name": "fill",
@@ -192,30 +221,8 @@
             "module": "Backbone.View.Model"
         },
         {
-            "file": "src/__backbone.view.model/model-to-html.js",
-            "line": 42,
-            "description": "Immediately before updating the view,\nthis method is called, so that we may return a\ndata object.\n\nIf the function names the second argument,\nthe function is then ran asynchronously.",
-            "itemtype": "method",
-            "name": "data",
-            "params": [
-                {
-                    "name": "model",
-                    "description": "",
-                    "type": "Backbone.Model"
-                },
-                {
-                    "name": "done",
-                    "description": "",
-                    "type": "Function",
-                    "optional": true
-                }
-            ],
-            "class": "",
-            "module": "Backbone.View.Model"
-        },
-        {
-            "file": "src/__backbone.view.model/model-to-html.js",
-            "line": 65,
+            "file": "src/__backbone.view.model/model-to-dom.js",
+            "line": 53,
             "description": "Method used internally to update the html.",
             "itemtype": "method",
             "name": "_updateView",

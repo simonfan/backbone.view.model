@@ -31,13 +31,13 @@ define(function (require, exports, module) {
 			// make sure there is a model
 			this.model = _.isFunction(this.model) ? new this.model() : this.model;
 
-			// MODEL -> HTML
+			// MODEL -> DOM
 			this._initModelToHtml();
 
-			// HTML INPUT -> MODEL
+			// DOM INPUT -> MODEL
 			this._initHtmlToModel();
 		}
 	})
-	.extend(require('./__backbone.view.model/html-to-model'))
-	.extend(require('./__backbone.view.model/model-to-html'));
+	.extend(require('./__backbone.view.model/dom-to-model/index'))
+	.extend(require('./__backbone.view.model/model-to-dom'));
 });

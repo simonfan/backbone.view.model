@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/__backbone.view.model/model-to-html.js - backbone.view.model</title>
+    <title>src/__backbone.view.model/dom-to-model/index.js - backbone.view.model</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -86,94 +86,141 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/__backbone.view.model/model-to-html.js</h1>
+                        <h1 class="file-heading">File: src/__backbone.view.model/dom-to-model/index.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * @module Backbone.View.Model
+ * @module backbone.view.model
+ * @submodule html-to-model
  */
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
 	var _ = require(&#x27;lodash&#x27;),
-		filler = require(&#x27;jquery.filler&#x27;);
+		$ = require(&#x27;jquery&#x27;);
+
+	// reads the value from DOM elements.
+	var readDomValue = require(&#x27;./read-dom-value&#x27;);
+
+
 
 	/**
-	 * Initialization logic for binding model
-	 * attributes to html elements.
+	 * Hash for the parsers. Every parser function is called
+	 * within the view&#x27;s context and takes the value read
+	 * from the DOM as arugment.
 	 *
-	 * @method _initModelToHtml
+	 * @property parsers
+	 * @type Object
 	 */
-	exports._initModelToHtml = function _initModelToHtml() {
+	exports.parsers = {};
+
+	/**
+	 * Initialization logic for binding html input tags values
+	 * to the models attributes.
+	 *
+	 * @method _initHtmlToModel
+	 */
+	exports._initHtmlToModel = function _initHtmlToModel() {
 
 		/**
-		 * The function that will fill in html for us.
-		 * Uses jquery.filler to build a cache of the
-		 * jquery DOM selections.
+		 * Hash where elements are referenced
+		 * by their selector strings.
 		 *
-		 * @method fill
-		 * @param data {Object}
+		 * @property $els
+		 * @type Object
 		 */
-		this.fill = filler(this.$el, this.map);
+		this.$els = {};
 
+		// Bind the _updateModel method to this object.
+		this._updateModel = _.bind(this._updateModel, this);
 
-		// bind the update view method
-		this._updateView = _.bind(this._updateView, this);
+		// bind inputs.
+		_.each(this.map, function (selector, attribute) {
 
-		// Listen to changes on attributes
-		// defined at the map.
-		// Any changes there should reflect
-		// changes on the view.
-		this.listenTo(this.model, &#x27;change&#x27;, this._updateView);
+			this.bindInput(selector, attribute);
+		}.bind(this));
 
-		// Set initial values
-		this._updateView(this.model);
+		// Listen to changes on input elements
+		// within the view and call an update
+		// whenever changes occur.
+		this.$el.on(&#x27;change&#x27;, this.inputSelector, this._updateModel);
 	};
 
-	/**
-	 * Immediately before updating the view,
-	 * this method is called, so that we may return a
-	 * data object.
-	 *
-	 * If the function names the second argument,
-	 * the function is then ran asynchronously.
-	 *
-	 * @method data
-	 * @param model {Backbone.Model}
-	 * @param [done] {Function}
-	 */
-	exports.data = function data(model /* done */) {
-
-		// we may return the model&#x27;s attributes by default,
-		// because jquery.filler has cached the attributes that
-		// need DOM change and those that do not need.
-		//
-		// otherwise, we would return model.changedAttributes()
-		// for better performance.
-		return model.attributes;
-	};
 
 	/**
-	 * Method used internally to update the html.
+	 * String of tagnames that identify input.
 	 *
-	 * @method _updateView
-	 * @private
-	 * @param model
+	 * @property inputSelector
+	 * @type String
 	 */
-	exports._updateView = function _updateView(model) {
+	exports.inputSelector = &#x27;input,textarea&#x27;;
 
-		if (this.data.length === 1) {
-			// sync
-			var data = this.data(model);
-			this.fill(data);
+
+	/**
+	 * Binds the value of the element selected to the attribute.
+	 *
+	 * @method bindInput
+	 * @param selector {String|Array}
+	 * @param attribute {String}
+	 */
+	exports.bindInput = function bindInput(selector, attribute) {
+
+		if (_.isArray(selector)) {
+
+			_.each(selector, _.bind(function (sel) {
+
+				this.bindInput(sel, attribute);
+
+			}, this));
 
 		} else {
 
-			// asynchronous!
-			this.data(model, _.bind(this.fill, this));
+			// retrieve $el and store it.
+			var $el = this.$els[selector] = this.$el.find(selector);
+
+			if ($el.length &gt; 0) {
+				$el.data(&#x27;backbone-view-model-bound-attribute&#x27;, attribute)
+					.data(&#x27;backbone-view-model-selector&#x27;, selector);
+			}
 		}
 	};
+
+	/**
+	 * Method used to hanlde changes on input elements within
+	 * the view.
+	 *
+	 * Very close-bound to the way bindInput works.
+	 *
+	 * @method _updateModel
+	 * @private
+	 * @param e {Event}
+	 */
+	exports._updateModel = function _updateModel(e) {
+			// wrap the target into a jquery object
+		var $target = $(e.target),
+			// retrieve the attribute that the target is bound to
+			attribute = $target.data(&#x27;backbone-view-model-bound-attribute&#x27;);
+
+		if (attribute) {
+			// only update if the element
+			// has an attribute bound to it.
+
+			// [1] retrieve the $el
+			var selector = $target.data(&#x27;backbone-view-model-selector&#x27;),
+				$el = this.$els[selector];
+
+			// [2] read the value and parse it
+			var value = readDomValue($el),
+				parse = this.parsers[attribute];
+
+			value = parse ? parse.call(this, value) : value;
+
+			// [3] set.
+			this.model.set(attribute, value);
+		}
+	};
+
 });
 
     </pre>

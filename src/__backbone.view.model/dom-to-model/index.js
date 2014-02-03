@@ -8,6 +8,21 @@ define(function (require, exports, module) {
 	var _ = require('lodash'),
 		$ = require('jquery');
 
+	// reads the value from DOM elements.
+	var readDomValue = require('./read-dom-value');
+
+
+
+	/**
+	 * Hash for the parsers. Every parser function is called
+	 * within the view's context and takes the value read
+	 * from the DOM as arugment.
+	 *
+	 * @property parsers
+	 * @type Object
+	 */
+	exports.parsers = {};
+
 	/**
 	 * Initialization logic for binding html input tags values
 	 * to the models attributes.
@@ -20,10 +35,10 @@ define(function (require, exports, module) {
 		 * Hash where elements are referenced
 		 * by their selector strings.
 		 *
-		 * @property $map
+		 * @property $els
 		 * @type Object
 		 */
-		this.$map = {};
+		this.$els = {};
 
 		// Bind the _updateModel method to this object.
 		this._updateModel = _.bind(this._updateModel, this);
@@ -69,67 +84,14 @@ define(function (require, exports, module) {
 
 		} else {
 
-			var $el = this.$el.find(selector);
+			// retrieve $el and store it.
+			var $el = this.$els[selector] = this.$el.find(selector);
 
-			this.$map[selector] = $el;
-
-			$el.data('bound-attribute', attribute)
-				.data('backbone-view-model-selector', selector);
-		}
-	};
-
-	/**
-	 * Hash of functions that will return a value
-	 * given an jquery $el.
-	 * Keyed by tagName
-	 *
-	 * @property $readers
-	 * @type Object
-	 */
-	exports.$readers = {
-		'default': function readDefault($el) {
-			return $el.val();
-		},
-
-		'DIV': function readDiv($el) {
-			return $el.html();
-		},
-
-		'INPUT': function readInput($el) {
-			if ($el.prop('type') === 'checkbox') {
-				return _.map($el.filter(':checked'), function (el) {
-					return $(el).val();
-				});
-
-			} else {
-				return $el.val();
+			if ($el.length > 0) {
+				$el.data('backbone-view-model-bound-attribute', attribute)
+					.data('backbone-view-model-selector', selector);
 			}
 		}
-	};
-
-	/**
-	 * Takes a selector string and returns the value of it.
-	 *
-	 * @method valueOf
-	 * @param selector {String}
-	 */
-	exports.valueOf = function valueOf(selector) {
-
-		// [1] retrieve $el
-		var $el = this.$map[selector];
-
-		if (!$el) {
-			// if no el is in cache, find it.
-			$el = this.$map[selector] = this.$el.find(selector);
-		}
-
-		// [2] retrieve reader function
-		var tagName = $el.prop('tagName'),
-			// retrieve the reader
-			reader = this.$readers[tagName] || this.$readers['default'];
-
-		// [3] read and return.
-		return reader($el);
 	};
 
 	/**
@@ -146,17 +108,23 @@ define(function (require, exports, module) {
 			// wrap the target into a jquery object
 		var $target = $(e.target),
 			// retrieve the attribute that the target is bound to
-			attribute = $target.data('bound-attribute');
-
-		console.log(attribute);
+			attribute = $target.data('backbone-view-model-bound-attribute');
 
 		if (attribute) {
 			// only update if the element
 			// has an attribute bound to it.
 
+			// [1] retrieve the $el
 			var selector = $target.data('backbone-view-model-selector'),
-				value = this.valueOf(selector);
+				$el = this.$els[selector];
 
+			// [2] read the value and parse it
+			var value = readDomValue($el),
+				parse = this.parsers[attribute];
+
+			value = parse ? parse.call(this, value) : value;
+
+			// [3] set.
 			this.model.set(attribute, value);
 		}
 	};

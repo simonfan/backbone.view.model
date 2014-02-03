@@ -7,6 +7,17 @@ define(function (require, exports, module) {
 	var _ = require('lodash'),
 		filler = require('jquery.filler');
 
+
+	/**
+	 * Holds the attribute stringifiers.
+	 * Every attribute stringifier is called within the view's
+	 * context and receives the model's attribute value.
+	 *
+	 * @property stringifiers
+	 */
+	exports.stringifiers = {};
+
+
 	/**
 	 * Initialization logic for binding model
 	 * attributes to html elements.
@@ -40,29 +51,6 @@ define(function (require, exports, module) {
 	};
 
 	/**
-	 * Immediately before updating the view,
-	 * this method is called, so that we may return a
-	 * data object.
-	 *
-	 * If the function names the second argument,
-	 * the function is then ran asynchronously.
-	 *
-	 * @method data
-	 * @param model {Backbone.Model}
-	 * @param [done] {Function}
-	 */
-	exports.data = function data(model /* done */) {
-
-		// we may return the model's attributes by default,
-		// because jquery.filler has cached the attributes that
-		// need DOM change and those that do not need.
-		//
-		// otherwise, we would return model.changedAttributes()
-		// for better performance.
-		return model.attributes;
-	};
-
-	/**
 	 * Method used internally to update the html.
 	 *
 	 * @method _updateView
@@ -71,15 +59,17 @@ define(function (require, exports, module) {
 	 */
 	exports._updateView = function _updateView(model) {
 
-		if (this.data.length === 1) {
-			// sync
-			var data = this.data(model);
-			this.fill(data);
+		var stringifiers = this.stringifiers,
+			data = _.mapValues(model.attributes, function (value, attribute) {
+				var stringify = stringifiers[attribute];
 
-		} else {
+				// if no stringify is defined, return the value
+				return stringify ? stringify.call(this, value) : value;
+			});
 
-			// asynchronous!
-			this.data(model, _.bind(this.fill, this));
-		}
+
+		console.log(data);
+
+		this.fill(data);
 	};
 });

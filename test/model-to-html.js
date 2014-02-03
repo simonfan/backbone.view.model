@@ -20,8 +20,9 @@ function(ModelView, should, Backbone, fruitTemplate) {
 			// Backbone cosntructors
 			this.FruitView = ModelView.extend({
 				map: {
-					'name': ['input[name="name"]', '.name'],
-					'colors': 'input[name="colors"]'
+					name: ['input[name="name"]', '.name'],
+					colors: 'input[name="colors"]',
+					price: ['div[bound-attribute="price"]', '.price']
 				}
 			});
 
@@ -84,5 +85,30 @@ function(ModelView, should, Backbone, fruitTemplate) {
 
 			this.$fruit.find('.name').html().should.eql('Melon');
 		});
+
+
+		it('supports stringify modifications', function () {
+			var fruitModel = new Backbone.Model({
+				name: 'Pineapple',
+				price: 40
+			});
+
+
+			var SaleFruitView = this.FruitView.extend({
+				stringifiers: {
+					price: function stringifyPrice(price) {
+						return 'R$ ' + price + ',00';
+					}
+				}
+			});
+
+			var fruitView = new SaleFruitView({
+				model: fruitModel,
+				el: this.$fruit
+			});
+
+			var $price = this.$fruit.find('div[bound-attribute="price"]');
+			$price.html().should.eql('R$ 40,00')
+		})
 	});
 });

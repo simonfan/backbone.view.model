@@ -123,15 +123,15 @@ define(function (require, exports, module) {
 			// make sure there is a model
 			this.model = _.isFunction(this.model) ? new this.model() : this.model;
 
-			// MODEL -&gt; HTML
+			// MODEL -&gt; DOM
 			this._initModelToHtml();
 
-			// HTML INPUT -&gt; MODEL
+			// DOM INPUT -&gt; MODEL
 			this._initHtmlToModel();
 		}
 	})
-	.extend(require(&#x27;./__backbone.view.model/html-to-model&#x27;))
-	.extend(require(&#x27;./__backbone.view.model/model-to-html&#x27;));
+	.extend(require(&#x27;./__backbone.view.model/dom-to-model/index&#x27;))
+	.extend(require(&#x27;./__backbone.view.model/model-to-dom&#x27;));
 });
 
     </pre>
